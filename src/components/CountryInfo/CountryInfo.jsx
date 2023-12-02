@@ -1,3 +1,6 @@
+import { useLocation } from 'react-router-dom';
+
+import { GoBackBtn } from 'components';
 import {
   CountryWrapper,
   CountryDescription,
@@ -10,34 +13,36 @@ import {
 } from './CountryInfo.styled';
 
 export const CountryInfo = ({
-  flag,
-  capital,
-  country,
-  id,
-  languages = [],
-  population,
+  country: { flag, capital, country, languages = [], population },
 }) => {
+  const location = useLocation();
+  // console.log(location);
+  const goBack = location?.state?.from || '/';
+
   return (
-    <h2>CountryInfo</h2>
-    // <CountryWrapper >
-    //   <Flag>
-    //     <Image />
-    //   </Flag>
-    //   <CountryDescription>
-    //     <CountryCapital>
-    //       Capital: <Accent></Accent>
-    //     </CountryCapital>
+    <>
+      <GoBackBtn path={goBack}>Go back</GoBackBtn>
 
-    //     <CountryTitle></CountryTitle>
+      <CountryWrapper>
+        <Flag>
+          <Image src={flag} alt={country} />
+        </Flag>
+        <CountryDescription>
+          <CountryCapital>
+            Capital: <Accent>{capital}</Accent>
+          </CountryCapital>
 
-    //     <CountryDetail>
-    //       Population: <Accent></Accent>
-    //     </CountryDetail>
+          <CountryTitle>{country}</CountryTitle>
 
-    //     <CountryDetail>
-    //       Languages: <Accent></Accent>
-    //     </CountryDetail>
-    //   </CountryDescription>
-    // </CountryWrapper>
+          <CountryDetail>
+            Population: <Accent>{population}</Accent>
+          </CountryDetail>
+
+          <CountryDetail>
+            Languages: <Accent>{languages.join(', ')}</Accent>
+          </CountryDetail>
+        </CountryDescription>
+      </CountryWrapper>
+    </>
   );
 };
